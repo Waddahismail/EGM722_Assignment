@@ -15,15 +15,15 @@ roads = gpd.read_file(data_path+'\\roads.shp')
 
 #Display the EPSG Code of the data, and check if all has same projection
 if land.crs == rcv.crs == roads.crs:
-    print ('The EPSG code for the lands, receivers and roads data: \'{}\''.format(land.crs))
+    print('The EPSG code for the lands, receivers and roads data: \'{}\''.format(land.crs))
 else:
-    print ('The data is not the same projection\n')
-    print ('Land Feature projection:{}, Roads Feature Projection:{}, Receivers Feature Projection:{}'
+    print('The data is not the same projection\n')
+    print('Land Feature projection:{}, Roads Feature Projection:{}, Receivers Feature Projection:{}'
            .format(land.crs,roads.crs,rcv.crs))
 
 #-------Count number of receiver points, and number of lands-------------------#
-print ('\nThere are ({}) land parcels within the project\'s area'.format(land['geometry'].count()))
-print ('There are total ({}) receiver points within the project\'s area\n'.format(rcv['geometry'].count()))
+print('\nThere are ({}) land parcels within the project\'s area'.format(land['geometry'].count()))
+print('There are total ({}) receiver points within the project\'s area\n'.format(rcv['geometry'].count()))
 
 #-------Check if receviers Intersect  with lands-------------------------------#
 def point_inside_shape(point, polygon):
@@ -34,17 +34,17 @@ def point_inside_shape(point, polygon):
     pt_poly_count = pt_poly_join['geometry'].count()
 
     if pt_poly_count==0:
-        print ('No receivers within the properties')
+        print('No receivers within the properties')
     else:
-        print ('Below are the number of receivers intersecting each land parcel:')
-        print (pt_poly_join.groupby(['land_id','land_type'])['station'].count())
+        print('Below are the number of receivers intersecting each land parcel:')
+        print(pt_poly_join.groupby(['land_id','land_type'])['station'].count())
 
 point_inside_shape(rcv,land)
 
 #--------Clip receivers with land layer----------------------------------------#
 land_clip = gpd.clip(land, rcv)
-land_clip.insert(len(land_clip.columns), 'no_of_rcv',0)
-land_clip.insert(len(land_clip.columns), 'compensation',0)
+land_clip.insert(len(land_clip.columns), 'no_of_rcv', 0)
+land_clip.insert(len(land_clip.columns), 'compensation', 0)
 
 #Update the number of receivers column
 for i in land_clip.iterrows():
@@ -56,11 +56,11 @@ def compensation(x,y):
     the function then calculates the value of compensation according to the number of receivers
     inside each property and updates the Compensation field"""
 
-    print ('\nThe compensation values for each land:')
+    print('\nThe compensation values for each land:')
     land_clip.loc[land_clip['land_type'] == 'agricultural', 'compensation'] = land_clip['no_of_rcv'] * x
     land_clip.loc[land_clip['land_type'] == 'residential', 'compensation'] = land_clip['no_of_rcv'] * y
 
-    print (land_clip , '\n')
+    print(land_clip , '\n')
     #Create a csv file of all compensation values per property
     land_clip[['land_id', 'owner', 'compensation']].to_csv('Compensation.csv')
 
@@ -73,7 +73,6 @@ def rcv_skips():
     and adds the result to a list, then create a Geodataframe and saves it as
     shapefile"""
 
-    global skipped_rcv_gdf
     skipped_rcv = []
     dist = []
 
@@ -93,9 +92,10 @@ def rcv_skips():
         if (roads.geometry.distance(pt) <= [i for i in dist]).any():
             skipped_rcv.append(pt)
 
-    print ('\nNumber or Receiver Skips: {}'.format(len(skipped_rcv)))
+    print('\nNumber or Receiver Skips: {}'.format(len(skipped_rcv)))
 
     #Create geodataframe of skipped receivers and export it as shapefile file
+    global skipped_rcv_gdf
     skipped_rcv_gdf = gpd.GeoDataFrame(geometry=skipped_rcv)
     skipped_rcv_gdf.to_file('Skipped_rcv')
 

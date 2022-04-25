@@ -1,15 +1,15 @@
 ,land_id,owner,compensation
-13,1,Kitana,400.0
-1,2,Scorpion,300.0
-5,3,Shao Khan,2400.0
-2,16,Sub-Zero,1600.0
-4,4,Kano,2000.0
-9,8,Kung Lao,1200.0
-11,13,Jade,1200.0
-6,5,Kintaro,6800.0
-3,9,Sonya,5200.0
-14,15,Jax,2000.0
+13,1,Kitana,200.0
+1,2,Scorpion,150.0
+5,3,Shao Khan,600.0
+2,16,Sub-Zero,400.0
+4,4,Kano,500.0
+9,8,Kung Lao,300.0
+11,13,Jade,300.0
+6,5,Kintaro,1700.0
+3,9,Sonya,1300.0
+14,15,Jax,500.0
 12,14,Noob-Saibot,
-7,6,Raiden,400.0
+7,6,Raiden,100.0
 10,11,Liu Kang,
-8,7,Reptile,3600.0
+8,7,Reptile,900.0

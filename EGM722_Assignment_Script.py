@@ -63,7 +63,10 @@ def compensation(x,y):
     inside each property and updates the Compensation field, outputs result as csv"""
 
     print('\nThe compensation values for each land:')
+    #Delete NaN values rows
     land_clip.dropna(inplace=True)
+
+    #Calculate compensation per land type
     land_clip.loc[land_clip['land_type'] == 'agricultural', 'compensation'] = land_clip['no_of_rcv'] * x
     land_clip.loc[land_clip['land_type'] == 'residential', 'compensation'] = land_clip['no_of_rcv'] * y
 

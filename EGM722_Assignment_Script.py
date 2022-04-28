@@ -5,11 +5,12 @@ from matplotlib.patches import Patch
 from matplotlib.lines import Line2D
 from matplotlib_scalebar.scalebar import ScaleBar
 
+
 #-------Set the data path------------------------------------------------------#
 data_path = 'D:\\_MSc\\EGM722\\Github\\EGM722_Assignment\\data_files'
 
 #Import the shapefiles as GeoPandas Geodataframe
-land = gpd.read_file(data_path + '\\land.shp')
+land = gpd.read_file(data_path+'\\land.shp')
 rcv = gpd.read_file(data_path+'\\receivers.shp')
 roads = gpd.read_file(data_path+'\\roads.shp')
 
@@ -27,8 +28,11 @@ print('There are total ({}) receiver points within the project\'s area\n'.format
 
 #-------Check if receviers Intersect  with lands-------------------------------#
 def point_inside_shape(point, polygon):
-    """The function checks if the receivers intersect with land
-    parcels, and count how many are inside each property"""
+    """The function checks if the receivers intersect with land parcels.
+
+     The function intersects the land & receivers datasets,
+     and count how many are inside each property/land"""
+
     global pt_poly_join
     pt_poly_join = gpd.sjoin(land, rcv, how='inner', lsuffix='left', rsuffix='right')
     pt_poly_count = pt_poly_join['geometry'].count()
@@ -41,7 +45,7 @@ def point_inside_shape(point, polygon):
 
 point_inside_shape(rcv,land)
 
-#--------Clip receivers with land layer----------------------------------------#
+#--------Clip receivers with land layer & create clipped layer------------------#
 land_clip = gpd.clip(land, rcv)
 land_clip.insert(len(land_clip.columns), 'no_of_rcv', 0)
 land_clip.insert(len(land_clip.columns), 'compensation', 0)
@@ -52,25 +56,31 @@ for i in land_clip.iterrows():
 
 #--------Calculate Compnsation per each property-------------------------------#
 def compensation(x,y):
-    """The user inputs the compensation value for agricultural & residential lands,
+    """The function calculates the compensation per each land/property.
+
+    The user inputs the compensation value for agricultural & residential lands,
     the function then calculates the value of compensation according to the number of receivers
-    inside each property and updates the Compensation field"""
+    inside each property and updates the Compensation field, outputs result as csv"""
 
     print('\nThe compensation values for each land:')
+    land_clip.dropna(inplace=True)
     land_clip.loc[land_clip['land_type'] == 'agricultural', 'compensation'] = land_clip['no_of_rcv'] * x
     land_clip.loc[land_clip['land_type'] == 'residential', 'compensation'] = land_clip['no_of_rcv'] * y
 
     print(land_clip , '\n')
+
     #Create a csv file of all compensation values per property
     land_clip[['land_id', 'owner', 'compensation']].to_csv('Compensation.csv')
 
-compensation(int(input('Enter Agricultural land compensation value:')),
+compensation(int(input('\nEnter Agricultural land compensation value:')),
              int(input('Enter Residential land compensation value:')))
 
 #--------Buffer roads and clip receivers---------------------------------------#
 def rcv_skips():
-    """Creates a list of all Receivers within certain distance of roads
-    and adds the result to a list, then create a Geodataframe and saves it as
+    """The function identifies skipped receivers from specific distance from roads.
+
+    Creates a list of all Receivers within certain distance of roads according to
+    road type, and adds the result to a list, then create a Geodataframe and saves it as
     shapefile"""
 
     skipped_rcv = []
@@ -104,15 +114,15 @@ rcv_skips()
 #--------plot map of lands & skips---------------------------------------------#
 #Design the canvas
 myFig = pplt.figure(figsize=(10, 8))
-myCRS = ccrs.UTM(37)
+myCRS = ccrs.UTM(39)
 ax = pplt.axes(projection=ccrs.Mercator())
 
 #Plot the data
 pplt.title("Land Parcels & Skipped Receivers", fontsize=20, color="black")
-land.plot(ax=ax, alpha = 0.5, color = 'blue', label = 'Land',transform = myCRS)
-rcv.plot(ax=ax,color = 'green', label = 'Receivers',transform = myCRS)
-skipped_rcv_gdf.plot(ax=ax,color = 'red', label = 'Skipped Receivers',transform = myCRS)
-roads.plot(ax=ax, color = 'orange', label = 'Roads',transform = myCRS)
+land.plot(ax=ax, alpha = 0.5, color = 'blue', label = 'Land', transform = myCRS)
+rcv.plot(ax=ax,color = 'green', label = 'Receivers', transform = myCRS)
+skipped_rcv_gdf.plot(ax=ax,color = 'red', label = 'Skipped Receivers', transform = myCRS)
+roads.plot(ax=ax, color = 'orange', label = 'Roads', transform = myCRS)
 
 #Create Legend shapes
 legend_elements = [Line2D([0], [0], marker='o', color='w', label='Receiver',
@@ -125,6 +135,7 @@ legend_elements = [Line2D([0], [0], marker='o', color='w', label='Receiver',
 
 ax.legend(handles=legend_elements, loc='upper right')
 
+#Create and add scalebar
 scalebar = ScaleBar(1, "m", length_fraction=0.25,location='lower left')
 ax.add_artist(scalebar)
 

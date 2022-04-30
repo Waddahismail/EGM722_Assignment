@@ -16,11 +16,15 @@ roads = gpd.read_file(data_path+'\\roads.shp')
 
 #Display the EPSG Code of the data, and check if all has same projection
 if land.crs == rcv.crs == roads.crs:
-    print('The EPSG code for the lands, receivers and roads data: \'{}\''.format(land.crs))
+    print ('All features are of coordinate system {}'.format(land.crs))
+    pass
 else:
-    print('The data is not the same projection\n')
-    print('Land Feature projection:{}, Roads Feature Projection:{}, Receivers Feature Projection:{}'
-           .format(land.crs,roads.crs,rcv.crs))
+    print ('Data was reprojected as 1 or more features had mismatching projection')
+    land = land.to_crs(epsg=32639)
+    roads = roads.to_crs(epsg=32639)
+    rcv = rcv.to_crs(epsg=32639)
+    print('Land Feature projection:{}\nRoads Feature Projection:{}\nReceivers Feature Projection:{}'
+               .format(land.crs,roads.crs,rcv.crs))
 
 #-------Count number of receiver points, and number of lands-------------------#
 print('\nThere are ({}) land parcels within the project\'s area'.format(land['geometry'].count()))
@@ -75,8 +79,8 @@ def compensation(x,y):
     #Create a csv file of all compensation values per property
     land_clip[['land_id', 'owner', 'compensation']].to_csv('Compensation.csv')
 
-compensation(int(input('\nEnter Agricultural land compensation value:')),
-             int(input('Enter Residential land compensation value:')))
+compensation(int(input('\nEnter Agricultural land compensation value per sensor:')),
+             int(input('Enter Residential land compensation value per sensor:')))
 
 #--------Buffer roads and clip receivers---------------------------------------#
 def rcv_skips():

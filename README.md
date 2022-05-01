@@ -1,5 +1,5 @@
 # EGM722_Assignment
-########1. Getting started
+## 1. Getting started
 You'll need to install both git and conda on your computer. You can follow the instructions for installing git from https://git-scm.com/downloads, and Anaconda from https://docs.anaconda.com/anaconda/install/.
 
 2. Download/clone this repository

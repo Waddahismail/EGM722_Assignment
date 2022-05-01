@@ -2,7 +2,7 @@
 ## 1. Getting started
 You'll need to install both git and conda on your computer. You can follow the instructions for installing git from https://git-scm.com/downloads, and Anaconda from https://docs.anaconda.com/anaconda/install/.
 
-## 2. Download/clone this repository
+## 2. Download/clone the repository
 Once you have these installed, clone this repository to your computer by doing one of the following things:
 
 Open GitHub Desktop and select File > Clone Repository. Select the URL tab, then enter the URL for this repository.

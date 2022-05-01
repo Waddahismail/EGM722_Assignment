@@ -25,5 +25,5 @@ All the required packages to run the script are included in the environment.yml 
 ## 5. Troubleshooting
 The user can change the data_path variable to the location where the shapefiles are saved, sample data for the project can be found on the Github directory “github.com/Waddahismail/WGM722_assignment”.
 If the user requires to replicate or use their own data for similar project, “land_id” and “station” fields in the properties feature must be numeric fields. “road_type” field in Roads feature is a text field to identify the type/category of each road.
-A user input is required for compensation and buffer values, this cannot be blank otherwise the cript will produce an error message, if the value is zero, then the user must input “0”.
+A user input is required for compensation and buffer values, this cannot be blank otherwise the script will produce an error message, if the value is zero, then the user must input “0”.
 

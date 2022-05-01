@@ -1,4 +1,4 @@
-# EGM722_Assignment
+# EGM722 Assignment
 ## 1. Getting started
 You'll need to install both git and conda on your computer. You can follow the instructions for installing git from https://git-scm.com/downloads, and Anaconda from https://docs.anaconda.com/anaconda/install/.
 
@@ -21,4 +21,9 @@ This will probably take some time.
 
 ## 4. Installing PyCharm (optional)
 The script does not require any changes by the user, I recommend using PyCharm to run the script, the installation guide can be found in this link https://www.jetbrains.com/pycharm/download/#section=windows, make sure to download the Community edition.
-All the required packages to run the script are included in the environment.yml file, but you can install them manually within PyCharm by following the instruction on this link https://www.jetbrains.com/help/pycharm/installing-uninstalling-and-upgrading-packages.html#packages-tool-window 
+All the required packages to run the script are included in the environment.yml file, but you can install them manually within PyCharm by following the instruction on this link https://www.jetbrains.com/help/pycharm/installing-uninstalling-and-upgrading-packages.html#packages-tool-window
+## 5. Troubleshooting
+The user can change the data_path variable to the location where the shapefiles are saved, sample data for the project can be found on the Github directory “github.com/Waddahismail/WGM722_assignment”.
+If the user requires to replicate or use their own data for similar project, “land_id” and “station” fields in the properties feature must be numeric fields. “road_type” field in Roads feature is a text field to identify the type/category of each road.
+A user input is required for compensation and buffer values, this cannot be blank otherwise the cript will produce an error message, if the value is zero, then the user must input “0”.
+

@@ -18,3 +18,6 @@ Otherwise, you can open a command prompt (on Windows, you may need to select an 
 
 C:\Users\(your machine user name)> conda env create -f environment.yml
 This will probably take some time.
+
+4. The script does not require any changes by the user, I recommend using PyCharm to run the script, the installation guide can be found in this link https://www.jetbrains.com/pycharm/download/#section=windows, make sure to download the Community edition.
+5. All the required packages to run the script are included in the environment.yml file, but you can install them manually within PyCharm by following the instruction on this link https://www.jetbrains.com/help/pycharm/installing-uninstalling-and-upgrading-packages.html#packages-tool-window 

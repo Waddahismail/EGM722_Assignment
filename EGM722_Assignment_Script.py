@@ -1,4 +1,3 @@
-import geopandas
 import geopandas as gpd
 import cartopy.crs as ccrs
 import matplotlib.pyplot as pplt
@@ -6,31 +5,32 @@ from matplotlib.patches import Patch
 from matplotlib.lines import Line2D
 from matplotlib_scalebar.scalebar import ScaleBar
 
-#-------Set the data path------------------------------------------------------#
+#-------Set the raw  path------------------------------------------------------#
 data_path = 'D:\\_MSc\\EGM722\\Github\\EGM722_Assignment\\data_files'
 
 #Import the shapefiles as GeoPandas Geodataframe
 property = gpd.read_file(data_path + '\\properties.shp')
-rcv = gpd.read_file(data_path+'\\receivers.shp')
-roads = gpd.read_file(data_path+'\\roads.shp')
+rcv = gpd.read_file(data_path + '\\receivers.shp')
+roads = gpd.read_file(data_path + '\\roads.shp')
 
 #Display the EPSG Code of the data, and check if all has same projection
 if property.crs == rcv.crs == roads.crs:
     print ('All features are of coordinate system {}'.format(property.crs))
     pass
 else:
-    print ('Data was reprojected as 1 or more features had mismatching projection')
-    property = property.to_crs(epsg=32639)
-    roads = roads.to_crs(epsg=32639)
-    rcv = rcv.to_crs(epsg=32639)
+    print ('Data will be reprojected as 1 or more features had mismatching projection')
+    epsg_code = int((input('Enter the EPSG Code for the area: ')))#32639 for this data
+    property = property.to_crs(epsg=epsg_code)
+    roads = roads.to_crs(epsg=epsg_code)
+    rcv = rcv.to_crs(epsg=epsg_code)
     print('Properties Feature projection:{}\nRoads Feature Projection:{}\nReceivers Feature Projection:{}'
           .format(property.crs, roads.crs, rcv.crs))
 
-#-------Count number of receiver points, and number of properties-------------------#
+#-------Count number of receiver points, and number of properties--------------#
 print('\nThere are ({}) properties within the project\'s area'.format(property['geometry'].count()))
 print('There are total ({}) receiver points within the project\'s area\n'.format(rcv['geometry'].count()))
 
-#-------Check if receviers Intersect  with properties-------------------------------#
+#-------Check if receviers Intersect  with properties--------------------------#
 def point_inside_shape(point, polygon):
     """The function checks if the receivers intersect with properties.
 
@@ -49,8 +49,10 @@ def point_inside_shape(point, polygon):
 
 point_inside_shape(rcv, property)
 
-#--------Clip receivers with properties layer & create clipped layer------------------#
+#--------Clip receivers with properties layer & create clipped layer-----------#
 properties_clipped = gpd.clip(property, rcv)
+
+#--------Add fields to the newely created layer--------------------------------#
 properties_clipped.insert(len(properties_clipped.columns), 'no_of_rcv', 0)
 properties_clipped.insert(len(properties_clipped.columns), 'compensation', 0)
 
@@ -86,11 +88,13 @@ compensation(int(input('\nEnter Agricultural property compensation value per sen
 def rcv_skips():
     """The function identifies skipped receivers from specific distance from roads.
 
-    Creates a list of all Receivers within certain distance of roads according to
+    Creates a list of all Receivers within user buffer distance of roads according to
     road type, and adds the result to a list, then create a Geodataframe and saves it as
     shapefile"""
+
     global main_roads_buffer
     global secondary_roads_buffer
+    global skipped_rcv_gdf
 
     skipped_rcv = []
     dist = []
@@ -118,13 +122,13 @@ def rcv_skips():
     for pt in rcv.geometry:
         if (roads.geometry.distance(pt) <= [i for i in dist]).any():
             skipped_rcv.append(pt)
-
+            
     print('\nNumber or Receiver Skips: {}'.format(len(skipped_rcv)))
 
     #Create geodataframe of skipped receivers and export it as shapefile file
-    global skipped_rcv_gdf
+
     skipped_rcv_gdf = gpd.GeoDataFrame(geometry=skipped_rcv)
-    skipped_rcv_gdf.to_file('Skipped_rcv')
+    skipped_rcv_gdf.to_file('skipped_rcv')
 
 rcv_skips()
 
@@ -135,20 +139,20 @@ myCRS = ccrs.UTM(39)
 ax = pplt.axes(projection=ccrs.Mercator())
 
 #Plot the data
-pplt.title("Land Parcels & Skipped Receivers", fontsize=20, color="black")
+pplt.title("Properties & Skipped Receivers", fontsize=20, color="black")
 property.plot(ax=ax, alpha = 0.5, color ='blue', transform = myCRS)
 main_roads_buffer.plot(ax=ax, alpha = 0.5, color ='red', transform = myCRS)
 secondary_roads_buffer.plot(ax=ax, alpha = 0.5, color ='yellow', transform = myCRS)
 rcv.plot(ax=ax,color = 'green', transform = myCRS)
 skipped_rcv_gdf.plot(ax=ax,color = 'red', transform = myCRS)
-roads.plot(ax=ax, color = 'orange', transform = myCRS)
+roads.plot(ax=ax, color = 'black', transform = myCRS)
 
 #Create Legend shapes
 legend_elements = [Line2D([0], [0], marker='o', color='w', label='Receiver',
                           markerfacecolor='g', markersize=10),
                    Line2D([], [], marker='o', color='w', label='Skipped Receiver',
                           markerfacecolor='r',markersize=10),
-                   Line2D([0], [0], color='orange', lw=2, label='Roads'),
+                   Line2D([0], [0], color='black', lw=2, label='Roads'),
                    Patch(facecolor='blue', edgecolor='black',
                          label='Property', alpha = 0.5),
                    Patch(facecolor='red', edgecolor='black',
@@ -162,5 +166,7 @@ ax.legend(handles=legend_elements, loc='upper right')
 #Create and add scalebar
 scalebar = ScaleBar(1, "m", length_fraction=0.25,location='lower left')
 ax.add_artist(scalebar)
+
+pplt.savefig('Project_Map.png', dpi=300, bbox_inches='tight')
 
 pplt.show()

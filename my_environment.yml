@@ -1,8 +1,0 @@
-name: EGM722 Assignment
-
-dependencies:
-  - python=3.10
-  - geopandas=0.10.2
-  - cartopy=0.20.2
-  - matplotlib=3.5.1
-  - matplotlib-scalebar=0.8.1

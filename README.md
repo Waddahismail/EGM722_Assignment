@@ -9,7 +9,7 @@ Once the Github directory is cloned, all sample data, script, and environments w
  
 
 ## 3. Create a conda environment
-Once the repository is successfully cloned, you can then create a Conda environment using the environment.yml file provided in the repository. This can be done by either selecting Import from the bottom of the Environments panel in Anaconda Navigator (https://docs.anaconda.com/anaconda/navigator/index.html).
+Once the repository is successfully cloned, you can then create a Conda environment using the environment.yml file provided in the repository. This can be done by  selecting Import from the bottom of the Environments panel in Anaconda Navigator (https://docs.anaconda.com/anaconda/navigator/index.html).
 
 ## 4. Installing PyCharm (optional)
 The script does not require any changes by the user, I recommend using PyCharm to run the script, the installation guide can be found in this link https://www.jetbrains.com/pycharm/download/#section=windows, make sure to download the Community edition.

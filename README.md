@@ -17,6 +17,7 @@ All the required packages to run the script are included in the environment.yml 
 
 ## 5. Troubleshooting
 The user can change the data_path variable to the location where the shapefiles are saved, sample data for the project can be found on the Github directory “github.com/Waddahismail/WGM722_assignment”.
+Properties sample data projected to UTM zone 37 is provided in the sample data folder, this is for the user to test the projection step in the code, the user can point the properties layer to this feature instead, to check if the statement will execute correctly.
 If the user requires to replicate or use their own data for similar project, “land_id” and “station” fields in the properties feature must be numeric fields. “road_type” field in Roads feature is a text field to identify the type/category of each road.
 A user input is required for compensation and buffer values, this cannot be blank otherwise the script will produce an error message, if the value is zero, then the user must input “0”.
 

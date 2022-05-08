@@ -4,12 +4,12 @@ Conda and Git must be installed first. The instructions for installing Git can b
 
 ## 2. Download/clone the repository
 Once Conda and Git installed, the repository should be cloned to the user’s local machine by following the below method:
-In GitHub Desktop, select File > Clone Repository. Select the URL tab, then enter the URL for this report’s repository https://github.com/Waddahismail/EGM722_Assignment , and the local repository path in the local machine must be specified. Execute the following command from Git Bash on the start menu: git clone https://github.com/Waddahismail/EGM722_Assignment. 
+In GitHub Desktop, select File > Clone Repository. Select the URL tab, then enter the URL for this report’s repository https://github.com/Waddahismail/EGM722_Assignment , and the local repository path in the local machine must be specified. Alternatively, you can execute the following command from Git Bash on the start menu: git clone https://github.com/Waddahismail/EGM722_Assignment, you need to open the directory where the file will be saved first using the command cd, for example cd documents will open the documents folder. 
 Once the Github directory is cloned, all sample data, script, and environments will be downloaded to the local machine.
  
 
 ## 3. Create a conda environment
-Once the repository is successfully cloned, you can then create a Conda environment using the environment.yml file provided in the repository. This can be done by either selecting Import from the bottom of the Environments panel in Anaconda Navigator (if it is installed). Otherwise, open a command prompt (or Anaconda command prompt on Windows). Navigate to the local folder where the repository was cloned, and run the following command: C:\Users(your machine user name)> conda env create -f environment.yml.
+Once the repository is successfully cloned, you can then create a Conda environment using the environment.yml file provided in the repository. This can be done by either selecting Import from the bottom of the Environments panel in Anaconda Navigator (https://docs.anaconda.com/anaconda/navigator/index.html).
 
 ## 4. Installing PyCharm (optional)
 The script does not require any changes by the user, I recommend using PyCharm to run the script, the installation guide can be found in this link https://www.jetbrains.com/pycharm/download/#section=windows, make sure to download the Community edition.
